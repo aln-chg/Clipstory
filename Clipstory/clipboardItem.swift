@@ -42,7 +42,7 @@ class ClipboardHistoryViewModel: ObservableObject {
         let newItem = ClipboardItem(content: content)
         clipboardItems.append(newItem)
         // If there are more than 500 items, remove the oldest
-        if clipboardItems.count > 500 {
+        if clipboardItems.count > 5 {
             clipboardItems.removeFirst()
         }
     }
