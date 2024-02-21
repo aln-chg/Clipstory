@@ -28,7 +28,7 @@ struct ContentView: View {
             if let selectedItemId = selectedItemId, let selectedItem = viewModel.clipboardItems.first(where: { $0.id == selectedItemId }) {
                 DetailView(selectedItem: selectedItem)
             } else {
-                Text("Select an item from the list.")
+                Text("Select an item.")
             }
         }
     }
@@ -39,16 +39,29 @@ struct DetailView: View {
     
     var body: some View {
         VStack {
-            Text("\(selectedItem.content) Details")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
+            // Container for the top content
+            VStack(alignment: .leading) {
+                Text("\(selectedItem.content) Details")
+                    .font(.custom("Monaco", size: 12))
+                    .frame(maxWidth: .infinity, alignment: .leading) // Align text to the left
+                    .padding() // Add padding for better appearance
+            }
+            .frame(maxHeight: .infinity, alignment: .topLeading) // Align this VStack to the top
+
             Divider()
-            
-            Text("Detail 2")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            // Container for the bottom content
+            VStack {
+                Text("Detail 2")
+                    .frame(maxWidth: .infinity, alignment: .leading) // Align text to the left
+                    .padding() // Add padding for better appearance
+            }
+            .frame(maxHeight: .infinity, alignment: .topLeading) // Keep this content at the top of its container
         }
     }
 }
+
+
 
 
 
