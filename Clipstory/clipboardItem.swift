@@ -40,10 +40,11 @@ class ClipboardHistoryViewModel: ObservableObject {
 
     func addItem(content: String) {
         let newItem = ClipboardItem(content: content)
-        clipboardItems.append(newItem)
+        //inserts the new item at the START of the array
+        clipboardItems.insert(newItem, at: 0)
         // If there are more than 500 items, remove the oldest
         if clipboardItems.count > 5 {
-            clipboardItems.removeFirst()
+            clipboardItems.removeLast()
         }
     }
 }
