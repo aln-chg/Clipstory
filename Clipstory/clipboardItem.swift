@@ -1,6 +1,12 @@
 import SwiftUI
 import AppKit
 
+
+enum ClipboardContent {
+    case text(String)
+    case image(NSImage)
+}
+
 class ClipboardHistoryViewModel: ObservableObject {
     @Published var clipboardItems: [ClipboardItem] = []
     private var changeCount: Int = NSPasteboard.general.changeCount // Tracks clipboard changes
@@ -30,11 +36,33 @@ class ClipboardHistoryViewModel: ObservableObject {
         let pasteboard = NSPasteboard.general
         if changeCount != pasteboard.changeCount { // There's new content in the clipboard
             changeCount = pasteboard.changeCount // Update the change count to the current one
-            if let copiedString = pasteboard.string(forType: .string) {
+            
+            var itemToAdd: ClipboardItem?
+            
+            // Check for images first
+            if let image = pasteboard.readObjects(forClasses: [NSImage.self], options: nil)?.first as? NSImage {
+                itemToAdd = ClipboardItem(content: .image(image))
+            }
+            // Check for strings if no image
+            else if let copiedString = pasteboard.string(forType: .string) {
+                itemToAdd = ClipboardItem(content: .text(copiedString))
+            }
+            
+            // If we have a new item to add, insert it at the top of the list
+            if let newItem = itemToAdd {
                 DispatchQueue.main.async { [weak self] in
-                    self?.addItem(content: copiedString)
+                    self?.addItem(newItem)
                 }
             }
+        }
+    }
+    
+    private func addItem(_ newItem: ClipboardItem) {
+        clipboardItems.insert(newItem, at: 0) // Inserts the new item at the START of the array
+        
+        // If there are more than 500 items, remove the oldest
+        if clipboardItems.count > 500 {
+            clipboardItems.removeLast()
         }
     }
     
@@ -43,14 +71,6 @@ class ClipboardHistoryViewModel: ObservableObject {
         pasteboard.clearContents()
         pasteboard.setString(text, forType: .string)
     }
-    
-    func addItem(content: String) {
-        let newItem = ClipboardItem(content: content)
-        //inserts the new item at the START of the array
-        clipboardItems.insert(newItem, at: 0)
-        // If there are more than 500 items, remove the oldest
-        if clipboardItems.count > 500 {
-            clipboardItems.removeLast()
-        }
-    }
 }
+
+// Rest of your SwiftUI views...

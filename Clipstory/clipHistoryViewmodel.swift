@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct ClipboardItem: Identifiable, Hashable {
+
+struct ClipboardItem: Identifiable{
     let id = UUID()
-    let content: String
+    let content: ClipboardContent
 }

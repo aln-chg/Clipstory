@@ -1,4 +1,6 @@
 import SwiftUI
+import AppKit
+
 
 struct ContentView: View {
     @StateObject var viewModel = ClipboardHistoryViewModel()
@@ -7,43 +9,48 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-                    List(filteredItems, selection: $selectedItemId) { item in
-                        HStack {
-                            Text(item.content)
-                                .lineLimit(1) // Ensures the text does not wrap
-                                .truncationMode(.tail) // Adds "..." at the end if the text is too long
-                                .padding(8)
-                                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-
-                            Button(action: {
-                                // Copy the item content to the clipboard
-                                copyTextToClipboard(text: item.content)
-                            }) {
-                                Image(systemName: "doc.on.clipboard") // The copy icon
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 20, height: 20) // Adjust the size as needed
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .padding(.trailing, 8) // Padding to keep the button visible
+            List(viewModel.clipboardItems, selection: $selectedItemId) { item in
+                HStack {
+                    itemContentView(item)
+                        .padding(6)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Button(action: {
+                        if case .text(let text) = item.content {
+                            copyTextToClipboard(text: text)
                         }
+                    }) {
+                        Image(systemName: "doc.on.clipboard")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
                     }
-                    .frame(minWidth: 300, idealWidth: 300, maxWidth: .infinity) // Set your desired width here
-                    .searchable(text: $searchText) // Add searchable modifier
-                } detail: {
-            if let selectedItemId = selectedItemId, let selectedItem = filteredItems.first(where: { $0.id == selectedItemId }) {
+                    .buttonStyle(PlainButtonStyle())
+                }
+            }
+            .frame(minWidth: 300, idealWidth: 300, maxWidth: .infinity)
+            .searchable(text: $searchText)
+        } detail: {
+            if let itemId = selectedItemId, let selectedItem = viewModel.clipboardItems.first(where: { $0.id == itemId }) {
                 DetailView(selectedItem: selectedItem)
             } else {
-                Text("Select an item.")
+                Text("Select an item or copy content.")
             }
         }
     }
 
-    var filteredItems: [ClipboardItem] {
-        guard !searchText.isEmpty else {
-            return viewModel.clipboardItems
+    private func itemContentView(_ item: ClipboardItem) -> some View {
+        Group {
+            switch item.content {
+            case .text(let text):
+                Text(text)
+            case .image(_):
+                HStack {
+                    Text("Image")
+                    Image(systemName: "photo").resizable().frame(width: 10, height: 10)
+                }
+            }
         }
-        return viewModel.clipboardItems.filter { $0.content.localizedCaseInsensitiveContains(searchText) }
     }
 
     func copyTextToClipboard(text: String) {
@@ -53,42 +60,41 @@ struct ContentView: View {
     }
 }
 
-
 struct DetailView: View {
     var selectedItem: ClipboardItem
-    
-    
+
     var body: some View {
-        VStack {
-            // Container for the top content
-            VStack(alignment: .leading) {
-                ScrollView{
-                    Text("\(selectedItem.content)")
+        VStack(spacing: 0) {
+            // Top Content
+            ScrollView {
+                VStack {
+                    switch selectedItem.content {
+                    case .text(let text):
+                        Text(text)
+                            .font(.custom("Monaco", size: 12))
+                            .padding()
+                    case .image(let image):
+                        Image(nsImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .padding()
+                    }
                 }
-                    .font(.custom("Monaco", size: 12))
-                    .frame(maxWidth: .infinity, alignment: .leading) // Align text to the left
-                    .padding(5) // Add padding for better appearance
-                
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxHeight: .infinity, alignment: .topLeading) // Align this VStack to the top
+            .frame(maxHeight: .infinity) // Allows the scroll view to expand
 
             Divider()
 
-            // Container for the bottom content
-            VStack {
-                Text("Detail 2")
-                    .frame(maxWidth: .infinity, alignment: .leading) // Align text to the left
-                    .padding() // Add padding for better appearance
-            }
-            .frame(maxHeight: .infinity, alignment: .topLeading) // Keep this content at the top of its container
+            // Bottom Content
+            Text("Detail 2")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .frame(maxHeight: .infinity) // Allows this text to expand
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
-
-
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
