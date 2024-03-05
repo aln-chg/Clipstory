@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct ClipstoryApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView() // Your main SwiftUI view
         }
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E76A7B092B96B659004954E4 /* appDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76A7B082B96B659004954E4 /* appDelegate.swift */; };
+		E76A7B0B2B96BAD1004954E4 /* MenuBarDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76A7B0A2B96BAD1004954E4 /* MenuBarDropdownView.swift */; };
 		E77E877C2B82B3DC00FB0B31 /* ClipstoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E877B2B82B3DC00FB0B31 /* ClipstoryApp.swift */; };
 		E77E877E2B82B3DC00FB0B31 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E877D2B82B3DC00FB0B31 /* ContentView.swift */; };
 		E77E87802B82B3DD00FB0B31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E77E877F2B82B3DD00FB0B31 /* Assets.xcassets */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E76A7B082B96B659004954E4 /* appDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = appDelegate.swift; sourceTree = "<group>"; };
+		E76A7B0A2B96BAD1004954E4 /* MenuBarDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarDropdownView.swift; sourceTree = "<group>"; };
 		E77E87782B82B3DC00FB0B31 /* Clipstory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clipstory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77E877B2B82B3DC00FB0B31 /* ClipstoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipstoryApp.swift; sourceTree = "<group>"; };
 		E77E877D2B82B3DC00FB0B31 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -67,6 +71,8 @@
 				E77E877B2B82B3DC00FB0B31 /* ClipstoryApp.swift */,
 				E77E878A2B83021700FB0B31 /* clipboardItem.swift */,
 				E77E878C2B83022B00FB0B31 /* clipHistoryViewmodel.swift */,
+				E76A7B082B96B659004954E4 /* appDelegate.swift */,
+				E76A7B0A2B96BAD1004954E4 /* MenuBarDropdownView.swift */,
 				E77E877D2B82B3DC00FB0B31 /* ContentView.swift */,
 				E77E877F2B82B3DD00FB0B31 /* Assets.xcassets */,
 				E77E87842B82B3DD00FB0B31 /* Clipstory.entitlements */,
@@ -166,6 +172,8 @@
 				E77E877E2B82B3DC00FB0B31 /* ContentView.swift in Sources */,
 				E77E878B2B83021700FB0B31 /* clipboardItem.swift in Sources */,
 				E77E877C2B82B3DC00FB0B31 /* ClipstoryApp.swift in Sources */,
+				E76A7B092B96B659004954E4 /* appDelegate.swift in Sources */,
+				E76A7B0B2B96BAD1004954E4 /* MenuBarDropdownView.swift in Sources */,
 				E77E878D2B83022B00FB0B31 /* clipHistoryViewmodel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
