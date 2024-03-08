@@ -11,4 +11,5 @@ import Foundation
 struct ClipboardItem: Identifiable{
     let id = UUID()
     let content: ClipboardContent
+    let timeOfCopy = Date()
 }

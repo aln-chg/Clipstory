@@ -65,7 +65,6 @@ struct DetailView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Top Content
             ScrollView {
                 VStack {
                     switch selectedItem.content {
@@ -82,19 +81,45 @@ struct DetailView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxHeight: .infinity) // Allows the scroll view to expand
+            // Control the expansion to split space evenly
+            .frame(maxHeight: .infinity)
 
             Divider()
 
-            // Bottom Content
-            Text("Detail 2")
-                .frame(maxWidth: .infinity, alignment: .leading)
+            // Use a GroupBox for better visual separation and padding control
+                VStack(alignment: .leading, spacing: 8) { // Add spacing between texts
+                    Text("Data Type: \(dataType(for: selectedItem.content))")
+                    Text("Time of Copy: \(formattedTime(of: selectedItem.timeOfCopy))")
+                    if case .text(let text) = selectedItem.content {
+                        Text("Character Count: \(text.count)")
+                        Text("Word Count: \(wordCount(of: text))")
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight:.infinity, alignment: .topLeading) // Aligns the content to the left
                 .padding()
-                .frame(maxHeight: .infinity) // Allows this text to expand
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func dataType(for content: ClipboardContent) -> String {
+        switch content {
+        case .text: return "Text"
+        case .image: return "Image"
+        }
+    }
+
+    private func formattedTime(of date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+
+    private func wordCount(of text: String) -> Int {
+        let words = text.split { !$0.isLetter }
+        return words.count
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
