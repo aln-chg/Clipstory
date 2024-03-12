@@ -8,28 +8,25 @@ import SwiftUI
 
 struct MenuBarListView: View {
     @ObservedObject var viewModel: ClipboardHistoryViewModel
-    var copyTextToClipboard: (String) -> Void
+    var copyTextToClipboard: (ClipboardContent) -> Void  // Changed to ClipboardContent
 
     var body: some View {
-        List {
-            ForEach(viewModel.clipboardItems) { item in
-                HStack {
-                    Text(extractContent(item: item))
-                        .padding(6)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    if case .text(let text) = item.content {
-                        Button(action: {
-                            self.copyTextToClipboard(text)
-                        }) {
-                            Image(systemName: "doc.on.clipboard")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
+        List(viewModel.clipboardItems) { item in
+            HStack {
+                Text(extractContent(item: item))
+                    .padding(6)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Spacer()
+                // Always show the copy button regardless of the content type
+                Button(action: {
+                    self.copyTextToClipboard(item.content)
+                }) {
+                    Image(systemName: "doc.on.clipboard")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
                 }
+                .buttonStyle(PlainButtonStyle())
             }
         }
     }

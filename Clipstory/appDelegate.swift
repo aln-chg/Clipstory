@@ -8,10 +8,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Initialize the popover content with padding and the copy functionality
-        let menuBarListView = MenuBarListView(viewModel: viewModel, copyTextToClipboard: { text in
-            let pasteboard = NSPasteboard.general
-            pasteboard.clearContents()
-            pasteboard.setString(text, forType: .string)
+        let menuBarListView = MenuBarListView(viewModel: viewModel, copyTextToClipboard: { content in
+            self.viewModel.copyContentToClipboard(content: content)
         })
         .padding()  // Add padding around the MenuBarListView
 

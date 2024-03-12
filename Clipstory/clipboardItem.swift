@@ -32,6 +32,21 @@ class ClipboardHistoryViewModel: ObservableObject {
         timer = nil
     }
     
+    func copyContentToClipboard(content: ClipboardContent) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        
+        switch content {
+        case .text(let text):
+            pasteboard.setString(text, forType: .string)
+        case .image(let image):
+            if let tiffData = image.tiffRepresentation {
+                pasteboard.setData(tiffData, forType: .tiff)
+            }
+        }
+    }
+
+    
     private func checkClipboard() {
         let pasteboard = NSPasteboard.general
         if changeCount != pasteboard.changeCount { // There's new content in the clipboard
